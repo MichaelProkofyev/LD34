@@ -10,8 +10,13 @@ public class PlayerPunchController : MonoBehaviour {
 	float shortPunchDistance = 2f;
 	float longPunchDistance = 20f;
 
-	float longPunchDashTime = 1f;
+	float longPunchDashTime = .1f;
 	float currDashTimeLeft;
+	Vector2 dashDestination;
+	Vector2 dashStart;
+	GameObject dashEnemy;
+	bool dashingRight;
+
 
 	void Start () {
 		cameraController = Camera.main.GetComponent<CameraController> ();
@@ -20,9 +25,23 @@ public class PlayerPunchController : MonoBehaviour {
 
 	void Update () {
 		if (currDashTimeLeft > 0) {
-//			transform.position = Vector2.Lerp(transform.position, dashDestination, 1 - currDashTimeLeft/longPunchDashTime);
+			float dashProgress = 1 - currDashTimeLeft/longPunchDashTime;
+			Vector2 newPosition = Vector2.Lerp(dashStart, dashDestination, dashProgress);
+			transform.position = newPosition;//, Space.World);
+//			Debug.Log(dashProgress);
+//			Debug.Log(transform.position);
+			cameraController.MoveToPlayer();
+			currDashTimeLeft -= Time.deltaTime;
+			if (currDashTimeLeft < 0) {
+				LongDashFinish();
+			}
 		}
+	}
 
+	void LongDashFinish() {
+		StartCoroutine("PauseWaitResume", 0.2f);
+		cameraController.StartShake();
+		dashEnemy.GetComponent<EnemyPunchingController>().RecievePunchFromRight(!dashingRight, punchPower);
 	}
 
 	public void RecievePunchFromRight(bool punchFromRight) {
@@ -41,7 +60,7 @@ public class PlayerPunchController : MonoBehaviour {
 			hit = Physics2D.Raycast(transform.position, Vector2.right*direction, longPunchDistance, enemiesMask);	
 			if (hit.collider != null) {
 				bool punchFromRight = (direction == -1) ? true : false;
-				HandleLongPunchingEnemy(hit.collider.gameObject, punchFromRight, hit.distance - 1);	
+				HandleLongPunchingEnemy(hit.collider.gameObject, punchFromRight, hit.distance - .5f);	
 			}
 		}
 	}
@@ -54,15 +73,21 @@ public class PlayerPunchController : MonoBehaviour {
 
 	void HandleLongPunchingEnemy(GameObject enemyObj, bool punchFromRight, float distance) {
 		int direction = punchFromRight ? -1 : 1;
+		dashingRight = !punchFromRight;
+		currDashTimeLeft = longPunchDashTime;
+		dashDestination = transform.TransformPoint(direction*distance, 0, 0);
+		dashStart = transform.position;
+		dashEnemy = enemyObj;
 
-//		currDashTimeLeft = longPunchDashTime;
+//		enemyObj.GetComponent<EnemyPunchingController>().RecievePunchFromRight(punchFromRight, punchPower);
 
-		gameObject.transform.Translate(new Vector2(direction*distance, 0), Space.Self);
-		enemyObj.GetComponent<EnemyPunchingController>().RecievePunchFromRight(punchFromRight, punchPower);
-		cameraController.MoveToPlayer();
 //		StartCoroutine("PauseWaitResume", 0.2f);
 		//cameraController.StartShake();  //TURN ON FOR SCREENSHAKE
 	}
+
+//	IEnumerator Dash (Vector2 destination) {
+//		gameObject.transform.Translate(destination, Space.Self);
+//	}
 
 	IEnumerator PauseWaitResume (float pauseDelay) {
 		yield return new WaitForSeconds(0.05f);
