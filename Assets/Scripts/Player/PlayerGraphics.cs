@@ -3,11 +3,11 @@ using System.Collections;
 
 public class PlayerGraphics : MonoBehaviour {
 
-	SpriteRenderer playerRenderer;
+	SpriteRenderer spriteRenderer;
 	Animator animator;
 
 	void Awake() {
-		playerRenderer = GetComponent<SpriteRenderer> ();
+		spriteRenderer = GetComponent<SpriteRenderer> ();
 		animator = GetComponent<Animator> ();
 	}
 
@@ -26,6 +26,6 @@ public class PlayerGraphics : MonoBehaviour {
 	}
 
 	public void FlipX (bool flipX) {
-		playerRenderer.flipX = flipX;
+		spriteRenderer.flipX = flipX;
 	}
 }
