@@ -18,18 +18,18 @@ public class PlayerInput : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		HandleKeys();
+		if (Input.GetButtonDown("Right")) {
+			HandleRightKey(true);
+		} else if(Input.GetButtonDown("Left")) {
+			HandleRightKey(false);
+		}
+
 	}
 
-	void HandleKeys () {
-		float horizontalInput = Input.GetAxis("Horizontal");
-		if (horizontalInput != 0) {
-			bool pressedRight = horizontalInput > 0;
-			graphics.FlipX(!pressedRight);
-			graphics.ButtonPressed();
-			punchController.EnableRightPunchTrigger(pressedRight);
-
-		}
+	void HandleRightKey (bool pressedRightKey) {
+		graphics.FlipX(!pressedRightKey);
+		graphics.ButtonPressed();
+		punchController.EnableRightPunchTrigger(pressedRightKey);
 	}
 
 
