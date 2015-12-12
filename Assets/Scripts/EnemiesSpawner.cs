@@ -34,7 +34,7 @@ public class EnemiesSpawner : MonoBehaviour {
 	IEnumerator SpawnEnemies() {
 		while(true) {
 			yield return new WaitForSeconds(spawnTimeOut);
-			spawnTimeOut = DEBUG_SPEED ? 0.1f : Random.Range(.75f, 2f);
+			spawnTimeOut = DEBUG_SPEED ? 0.2f : Random.Range(.75f, 2f);
 
 			GameObject newEnemy;
 			int runDirection;
@@ -45,6 +45,8 @@ public class EnemiesSpawner : MonoBehaviour {
 				newEnemy = (GameObject)Instantiate(enemyPrefab, leftSpawnPoint.position, Quaternion.identity);
 				runDirection = 1;
 			}
+			newEnemy.GetComponent<EnemyGraphics>().StartMoving();
+			newEnemy.GetComponent<EnemyGraphics>().FlipX(lastSpawnRight);
 			newEnemy.GetComponent<EnemyMovementController>().SetDirection(runDirection);				
 			newEnemy.GetComponent<EnemyPunchingController>().movingRight = !lastSpawnRight;
 

@@ -32,12 +32,13 @@ public class EnemyPunchingController : MonoBehaviour {
 	}
 
 	public void RecievePunchFromRight(bool punchFromRight, float punchPower) {
-		Debug.Log("getting punched!");
 		movingController.moving = false;
 		GetComponent<Collider2D>().enabled = false;
+		GetComponent<EnemyGraphics>().StopMoving();
 		int direсtion = punchFromRight ? -1 : 1;
 		rb.AddForce((direсtion * Vector3.right + Vector3.up) * punchPower, ForceMode2D.Impulse);
 		rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+
 		Destroy(gameObject, 2f);
 	}
 }

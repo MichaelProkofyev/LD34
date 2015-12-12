@@ -10,10 +10,12 @@ public class EnemyMovementController : MonoBehaviour {
 
 	private int playerMask;
 
+	private EnemyGraphics enemyGraphics;
 
 	// Use this for initialization
 	void Start () {
 		playerMask = LayerMask.GetMask("Player");	
+		enemyGraphics = GetComponent<EnemyGraphics> ();
 	}
 
 	public void SetDirection (int startDirection) {
@@ -26,6 +28,16 @@ public class EnemyMovementController : MonoBehaviour {
 			transform.Translate( movementVector * Time.deltaTime);	
 			CheckForPlayerAhead();
 		}
+	}
+
+	void StartMoving () {
+		moving = true;
+		enemyGraphics.StartMoving();
+	}
+
+	void StopMoving () {
+		moving = false;
+		enemyGraphics.StopMoving();
 	}
 
 	void CheckForPlayerAhead () {

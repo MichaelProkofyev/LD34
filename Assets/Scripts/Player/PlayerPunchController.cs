@@ -42,6 +42,7 @@ public class PlayerPunchController : MonoBehaviour {
 		StartCoroutine("PauseWaitResume", 0.2f);
 		cameraController.StartShake();
 		dashEnemy.GetComponent<EnemyPunchingController>().RecievePunchFromRight(!dashingRight, punchPower);
+		PlayPunchSound();
 	}
 
 	public void RecievePunchFromRight(bool punchFromRight) {
@@ -69,6 +70,7 @@ public class PlayerPunchController : MonoBehaviour {
 		enemyObj.GetComponent<EnemyPunchingController>().RecievePunchFromRight(punchFromRight, punchPower);
 		StartCoroutine("PauseWaitResume", 0.2f);
 		cameraController.StartShake();
+		PlayPunchSound();
 	}
 
 	void HandleLongPunchingEnemy(GameObject enemyObj, bool punchFromRight, float distance) {
@@ -78,16 +80,7 @@ public class PlayerPunchController : MonoBehaviour {
 		dashDestination = transform.TransformPoint(direction*distance, 0, 0);
 		dashStart = transform.position;
 		dashEnemy = enemyObj;
-
-//		enemyObj.GetComponent<EnemyPunchingController>().RecievePunchFromRight(punchFromRight, punchPower);
-
-//		StartCoroutine("PauseWaitResume", 0.2f);
-		//cameraController.StartShake();  //TURN ON FOR SCREENSHAKE
 	}
-
-//	IEnumerator Dash (Vector2 destination) {
-//		gameObject.transform.Translate(destination, Space.Self);
-//	}
 
 	IEnumerator PauseWaitResume (float pauseDelay) {
 		yield return new WaitForSeconds(0.05f);
@@ -95,6 +88,10 @@ public class PlayerPunchController : MonoBehaviour {
 		yield return new WaitForSeconds(pauseDelay * Time.timeScale);
 		Time.timeScale = 1.0f;
 
+	}
+
+	void PlayPunchSound () {
+		GetComponent<AudioSource>().Play();
 	}
 
 }

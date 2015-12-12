@@ -3,15 +3,13 @@ using System.Collections;
 
 public class EnemyGraphics : MonoBehaviour {
 
-	public bool running = true;
 
 	SpriteRenderer spriteRenderer;
-	Animator animator;
+	Animator enemyAnimator;
 
-	// Use this for initialization
-	void Start () {
+	void Awake() {
+		enemyAnimator = GetComponent<Animator> ();
 		spriteRenderer = GetComponent<SpriteRenderer> ();
-//		animator = GetComponent<Animator> ();
 	}
 	
 	// Update is called once per frame
@@ -19,10 +17,13 @@ public class EnemyGraphics : MonoBehaviour {
 		
 	}
 
-	public void StartRunning () {
-		if (running) {
-//			animator.SetBool("running", true);
-		}
+	public void StartMoving () {
+		enemyAnimator.SetBool("running", true);
+
+	}
+
+	public void StopMoving () {
+		enemyAnimator.SetBool("running", false);
 	}
 
 	public void FlipX (bool flipX) {
