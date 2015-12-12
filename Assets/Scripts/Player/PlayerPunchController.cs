@@ -3,82 +3,73 @@ using System.Collections;
 
 public class PlayerPunchController : MonoBehaviour {
 
-	public BoxCollider2D leftPunchCollider;
-	public BoxCollider2D rightPunchCollider;
-
-	public float punchDuration = 0.5f;
-	bool punchingRight = true;
-	float currPunchTimeLeft;
+	CameraController cameraController;
 	float punchPower = 25;
+	int enemiesMask;
+
+	float shortPunchDistance = 2f;
+	float longPunchDistance = 20f;
+
+	float longPunchDashTime = 1f;
+	float currDashTimeLeft;
 
 	void Start () {
-	
+		cameraController = Camera.main.GetComponent<CameraController> ();
+		enemiesMask = LayerMask.GetMask("Enemies");	
 	}
-	
-	// Update is called once per frame
+
 	void Update () {
-		UpdatePunchTriggers();
+		if (currDashTimeLeft > 0) {
+//			transform.position = Vector2.Lerp(transform.position, dashDestination, 1 - currDashTimeLeft/longPunchDashTime);
+		}
+
 	}
 
 	public void RecievePunchFromRight(bool punchFromRight) {
-		currPunchTimeLeft = 0;
 		return;
 		int direсtion = punchFromRight ? -1 : 1;
 		transform.Translate(Vector3.right * direсtion);
 	}
 
-
-	void UpdatePunchTriggers () {
-		if (currPunchTimeLeft > 0) {
-			currPunchTimeLeft -= Time.deltaTime;
-		} else {
-			DisablePunchTriggers ();
+	public void CastPunchRay(int direction) {
+		RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.right*direction, shortPunchDistance, enemiesMask);
+		if (hit.collider != null) {
+			bool punchFromRight = (direction == -1) ? true : false;
+			HandlePunchingEnemy(hit.collider.gameObject, punchFromRight);
+		}
+		else {
+			hit = Physics2D.Raycast(transform.position, Vector2.right*direction, longPunchDistance, enemiesMask);	
+			if (hit.collider != null) {
+				bool punchFromRight = (direction == -1) ? true : false;
+				HandleLongPunchingEnemy(hit.collider.gameObject, punchFromRight, hit.distance - 1);	
+			}
 		}
 	}
 
-	void DisablePunchTriggers () {
-		leftPunchCollider.enabled = false;
-		rightPunchCollider.enabled = false;	
+	void HandlePunchingEnemy(GameObject enemyObj, bool punchFromRight) {
+		enemyObj.GetComponent<EnemyPunchingController>().RecievePunchFromRight(punchFromRight, punchPower);
+		StartCoroutine("PauseWaitResume", 0.2f);
+		cameraController.StartShake();
 	}
 
-	public void EnableRightPunchTrigger (bool rightTrigger) {
-		currPunchTimeLeft = punchDuration;
-		if (rightTrigger) {
-			punchingRight = true;
-			rightPunchCollider.enabled = true;
-			leftPunchCollider.enabled = false;
-		}else {
-				punchingRight = false;
-				leftPunchCollider.enabled = true;
-				rightPunchCollider.enabled = false;
-		}
+	void HandleLongPunchingEnemy(GameObject enemyObj, bool punchFromRight, float distance) {
+		int direction = punchFromRight ? -1 : 1;
 
-	}
+//		currDashTimeLeft = longPunchDashTime;
 
-	void OnTriggerEnter2D(Collider2D other) {
-		GameObject gameObj = other.gameObject;
-		if (gameObj.tag == "Enemy") {
-			HandlePunchingEnemy(gameObj);
-		}
-	}
-
-	void OnTriggerStay2D(Collider2D other) {
-		GameObject gameObj = other.gameObject;
-		if (gameObj.tag == "Enemy") {
-			HandlePunchingEnemy(gameObj);
-		}
-	}
-
-	void HandlePunchingEnemy(GameObject enemyObj) {
-		enemyObj.GetComponent<EnemyPunchingController>().RecievePunchFromRight(!punchingRight, punchPower);
-		StartCoroutine("PauseWaitResume", 0.05f);
-		DisablePunchTriggers();
+		gameObject.transform.Translate(new Vector2(direction*distance, 0), Space.Self);
+		enemyObj.GetComponent<EnemyPunchingController>().RecievePunchFromRight(punchFromRight, punchPower);
+		cameraController.MoveToPlayer();
+//		StartCoroutine("PauseWaitResume", 0.2f);
+		//cameraController.StartShake();  //TURN ON FOR SCREENSHAKE
 	}
 
 	IEnumerator PauseWaitResume (float pauseDelay) {
+		yield return new WaitForSeconds(0.05f);
 		Time.timeScale = .0000001f;
 		yield return new WaitForSeconds(pauseDelay * Time.timeScale);
 		Time.timeScale = 1.0f;
+
 	}
 
 }

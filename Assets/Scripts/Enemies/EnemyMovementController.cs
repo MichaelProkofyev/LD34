@@ -6,7 +6,7 @@ public class EnemyMovementController : MonoBehaviour {
 	float speed = 5f;
 	public Vector3 movementVector;
 	public bool moving = true;
-	public int direction = 1;
+	int direction = 1;
 
 	private int playerMask;
 
@@ -16,8 +16,9 @@ public class EnemyMovementController : MonoBehaviour {
 		playerMask = LayerMask.GetMask("Player");	
 	}
 
-	public void SetDirection (float direction) {   //setting speed AND direction
-		movementVector = Vector3.right * direction * speed;
+	public void SetDirection (int startDirection) {
+		direction = startDirection;
+		movementVector = Vector3.right * startDirection * speed;
 	}
 
 	void Update () {

@@ -7,9 +7,11 @@ public class EnemiesSpawner : MonoBehaviour {
 	public Transform leftSpawnPoint;
 	public Transform rightSpawnPoint;
 	public GameObject enemyPrefab;
+	public Transform playersTransform;
+
 	float spawnTimeOut = 1f;
 	bool lastSpawnRight = false;
-
+	private bool DEBUG_SPEED = false;
 
 	// Use this for initialization
 	void Start () {
@@ -17,13 +19,22 @@ public class EnemiesSpawner : MonoBehaviour {
 		StartCoroutine("SpawnEnemies");
 	}
 
+	void Update () {
+		
+
+		if (Input.GetButtonDown("Jump")) {
+			DEBUG_SPEED = !DEBUG_SPEED;
+		}
+	}
+
+
 
 
 
 	IEnumerator SpawnEnemies() {
 		while(true) {
 			yield return new WaitForSeconds(spawnTimeOut);
-			spawnTimeOut =5;// Random.Range(.75f, 2f);
+			spawnTimeOut = DEBUG_SPEED ? 0.1f : Random.Range(.75f, 2f);
 
 			GameObject newEnemy;
 			int runDirection;
@@ -35,7 +46,6 @@ public class EnemiesSpawner : MonoBehaviour {
 				runDirection = 1;
 			}
 			newEnemy.GetComponent<EnemyMovementController>().SetDirection(runDirection);				
-			newEnemy.GetComponent<EnemyMovementController>().direction = lastSpawnRight ?  -1 : 1;				
 			newEnemy.GetComponent<EnemyPunchingController>().movingRight = !lastSpawnRight;
 
 		}

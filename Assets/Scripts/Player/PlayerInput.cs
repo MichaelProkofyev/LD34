@@ -29,7 +29,8 @@ public class PlayerInput : MonoBehaviour {
 	void HandleRightKey (bool pressedRightKey) {
 		graphics.FlipX(!pressedRightKey);
 		graphics.ButtonPressed();
-		punchController.EnableRightPunchTrigger(pressedRightKey);
+		int hitDirection = pressedRightKey ? 1 : -1;
+		punchController.CastPunchRay(hitDirection);
 	}
 
 
