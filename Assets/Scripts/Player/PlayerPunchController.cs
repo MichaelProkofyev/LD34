@@ -9,7 +9,7 @@ public class PlayerPunchController : MonoBehaviour {
 	public float punchDuration = 0.5f;
 	bool punchingRight = true;
 	float currPunchTimeLeft;
-	float punchPower = 15;
+	float punchPower = 25;
 
 	void Start () {
 	
@@ -17,18 +17,29 @@ public class PlayerPunchController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		UpdatePunchTriggers();
+	}
+
+	public void RecievePunchFromRight(bool punchFromRight) {
+		currPunchTimeLeft = 0;
+		return;
+		int direсtion = punchFromRight ? -1 : 1;
+		transform.Translate(Vector3.right * direсtion);
+	}
+
+
+	void UpdatePunchTriggers () {
 		if (currPunchTimeLeft > 0) {
 			currPunchTimeLeft -= Time.deltaTime;
 		} else {
-			leftPunchCollider.enabled = false;
-			rightPunchCollider.enabled = false;	
+			DisablePunchTriggers ();
 		}
 	}
 
-//	void DisablePunchTriggers() {
-//		leftPunchCollider.enabled = false;
-//		rightPunchCollider.enabled = false;
-//	}
+	void DisablePunchTriggers () {
+		leftPunchCollider.enabled = false;
+		rightPunchCollider.enabled = false;	
+	}
 
 	public void EnableRightPunchTrigger (bool rightTrigger) {
 		currPunchTimeLeft = punchDuration;
@@ -46,23 +57,28 @@ public class PlayerPunchController : MonoBehaviour {
 
 	void OnTriggerEnter2D(Collider2D other) {
 		GameObject gameObj = other.gameObject;
-//		Debug.Log(gameObj.tag);
 		if (gameObj.tag == "Enemy") {
-			Rigidbody2D enemyRb =  gameObj.GetComponent<Rigidbody2D>();
-			gameObj.GetComponent<EnemyMovementController> ().moving = false;
-			int direсtion = punchingRight ? 1 : -1;
-			enemyRb.AddForce((direсtion * Vector3.right + Vector3.up) * punchPower, ForceMode2D.Impulse);
-			enemyRb.constraints = RigidbodyConstraints2D.FreezeRotation;
-
+			HandlePunchingEnemy(gameObj);
 		}
 	}
 
-//	void OnTriggerStay(Collider2D other) {
-//		GameObject gameObj = other.gameObject;
-//		Debug.Log(gameObj.tag);
-//		if (gameObj.tag == "Enemy") {
-//			//			gameObj.rigidbody2D
-//
-//		}
-//	}
+	void OnTriggerStay2D(Collider2D other) {
+		GameObject gameObj = other.gameObject;
+		if (gameObj.tag == "Enemy") {
+			HandlePunchingEnemy(gameObj);
+		}
+	}
+
+	void HandlePunchingEnemy(GameObject enemyObj) {
+		enemyObj.GetComponent<EnemyPunchingController>().RecievePunchFromRight(!punchingRight, punchPower);
+		StartCoroutine("PauseWaitResume", 0.05f);
+		DisablePunchTriggers();
+	}
+
+	IEnumerator PauseWaitResume (float pauseDelay) {
+		Time.timeScale = .0000001f;
+		yield return new WaitForSeconds(pauseDelay * Time.timeScale);
+		Time.timeScale = 1.0f;
+	}
+
 }

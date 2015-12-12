@@ -33,8 +33,8 @@ public class PlayerInput : MonoBehaviour {
 	}
 
 
-	void OnCollisionEnter2D(Collision2D other) {
-		Debug.Log("Enemy hit you!");
-	}
+//	void OnCollisionEnter2D(Collision2D other) {
+//		Debug.Log("Enemy hit you!");
+//	}
 
 }

@@ -3,9 +3,13 @@ using System.Collections;
 
 public class EnemiesSpawner : MonoBehaviour {
 
+
+	public Transform leftSpawnPoint;
+	public Transform rightSpawnPoint;
 	public GameObject enemyPrefab;
-	public bool spawnToRight;
 	float spawnTimeOut = 1f;
+	bool lastSpawnRight = false;
+
 
 	// Use this for initialization
 	void Start () {
@@ -19,12 +23,34 @@ public class EnemiesSpawner : MonoBehaviour {
 	IEnumerator SpawnEnemies() {
 		while(true) {
 			yield return new WaitForSeconds(spawnTimeOut);
-			GameObject newEnemy = (GameObject)Instantiate(enemyPrefab, transform.position, Quaternion.identity);
-			int runDirection = spawnToRight ? 1 : -1;
+			spawnTimeOut =5;// Random.Range(.75f, 2f);
+
+			GameObject newEnemy;
+			int runDirection;
+			if (shouldSpawnToRight()) {
+				newEnemy = (GameObject)Instantiate(enemyPrefab, rightSpawnPoint.position, Quaternion.identity);
+				runDirection = -1;
+			}else {
+				newEnemy = (GameObject)Instantiate(enemyPrefab, leftSpawnPoint.position, Quaternion.identity);
+				runDirection = 1;
+			}
 			newEnemy.GetComponent<EnemyMovementController>().SetDirection(runDirection);				
-			spawnTimeOut = Random.Range(1f, 3f);
+			newEnemy.GetComponent<EnemyMovementController>().direction = lastSpawnRight ?  -1 : 1;				
+			newEnemy.GetComponent<EnemyPunchingController>().movingRight = !lastSpawnRight;
+
 		}
 	}
-	
+
+	bool shouldSpawnToRight() {
+		float max = 1.0f;
+		float min = -1.0f;
+		if (lastSpawnRight) {
+			max = 0.5f;
+		}else {
+			min = -0.5f;
+		}
+		lastSpawnRight = Random.Range(min, max) > 0;
+		return lastSpawnRight;
+	}
 
 }
