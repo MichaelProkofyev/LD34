@@ -4,7 +4,7 @@ using System.Collections;
 public class EnemyController : MonoBehaviour {
 
 
-	enum EnemyState
+	public enum EnemyState
 	{
 		MOVING_TO_PLAYER,
 		WAITING_TO_PUNCH,
@@ -12,8 +12,10 @@ public class EnemyController : MonoBehaviour {
 		PUNCHING_ANIMATION,
 		DEAD
 	}
+		
 
-	EnemyState state = EnemyState.MOVING_TO_PLAYER;
+
+	public EnemyState state = EnemyState.MOVING_TO_PLAYER;
 	EnemyMovementController movement;
 	EnemyGraphics enemyGraphics;
 	EnemyPunchingController enemyPunch;
@@ -47,6 +49,8 @@ public class EnemyController : MonoBehaviour {
 				state = EnemyState.WAITING_TO_PUNCH;
 				StopMovingToPlayer();
 				punchWaitLeft = punchWait;
+			}else {
+				StartMovingToPlayer();
 			}
 			break;
 		case EnemyState.WAITING_TO_PUNCH:
@@ -71,9 +75,13 @@ public class EnemyController : MonoBehaviour {
 	}
 
 	void StartPunching() {
-		enemyPunch.PunchPlayer();
-		state = EnemyState.WAITING_TO_PUNCH;
-		punchWaitLeft = punchWait;
+		if (PlayerAhead()) {
+			enemyPunch.PunchPlayer();
+			state = EnemyState.WAITING_TO_PUNCH;
+			punchWaitLeft = punchWait;	
+		}else {
+			state = EnemyState.MOVING_TO_PLAYER;
+		}
 	}
 
 	public void StartMovingToPlayer () {
@@ -87,6 +95,13 @@ public class EnemyController : MonoBehaviour {
 	public void StopMovingToPlayer () {
 		movement.StopMoving();
 		enemyGraphics.StopMoving();
+	}
+
+	public void Die () {
+		StopMovingToPlayer();
+		GetComponent<Collider2D>().enabled = false;
+		enemyGraphics.Die();
+		state = EnemyState.DEAD;
 	}
 
 	bool PlayerAhead () {

@@ -34,7 +34,7 @@ public class EnemiesSpawner : MonoBehaviour {
 	IEnumerator SpawnEnemies() {
 		while(true) {
 			yield return new WaitForSeconds(spawnTimeOut);
-			spawnTimeOut = DEBUG_SPEED ? 0.2f : Random.Range(.75f, 2f);
+			spawnTimeOut = DEBUG_SPEED ? 0.2f : Random.Range(.5f, 1f);
 
 			GameObject newEnemy;
 			if (shouldSpawnToRight()) {

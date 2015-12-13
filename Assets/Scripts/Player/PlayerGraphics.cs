@@ -8,7 +8,6 @@ public class PlayerGraphics : MonoBehaviour {
 	FlasherToWhite flasherToWhite;
 
 	float flashDuration = 0.1f;
-	float currFlashDuration = 0f;
 	Color flashColor = new Color(1f, 1f, 1f, 0f);
 
 	void Awake() {
@@ -21,17 +20,8 @@ public class PlayerGraphics : MonoBehaviour {
 	void Start () {
 		
 	}
-	
-	// Update is called once per frame
+
 	void Update () {
-//		if (currFlashDuration > 0) {
-////			if (currFlashDuration > 0.5f) {
-////				spriteRenderer.color = Color.Lerp(Color.white, new Color(1f, 1f, 1f, 0f), 1 - (currFlashDuration-0.5f)*2);
-////			} else {
-////				
-////			}
-//			spriteRenderer.color = Color.Lerp(Color.white, flashColor, 1 - currFlashDuration);
-//		}
 	}
 
 	public void ButtonPressed() {
@@ -43,16 +33,12 @@ public class PlayerGraphics : MonoBehaviour {
 	}
 
 	public void FlashSprite() {
-//		currFlashDuration = flashDuration;
 		StartCoroutine("UpdateFlashingSprite");
 	}
 
 	IEnumerator UpdateFlashingSprite () {
-//		for (int i = 0; i < 3; i++) {
-			flasherToWhite.whiteSprite();
-//			spriteRenderer.color = new Color(1f, 1f, 1f, 0f);
-			yield return new WaitForSeconds(flashDuration);
-			flasherToWhite.normalSprite();
-//		}
+		flasherToWhite.whiteSprite();
+		yield return new WaitForSeconds(flashDuration);
+		flasherToWhite.normalSprite();
 	}
 }

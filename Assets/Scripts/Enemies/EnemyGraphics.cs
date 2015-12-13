@@ -33,4 +33,8 @@ public class EnemyGraphics : MonoBehaviour {
 	public void Punch () {
 		enemyAnimator.SetTrigger("kick");
 	}
+
+	public void Die () {
+		enemyAnimator.SetBool("dead", true);
+	}
 }

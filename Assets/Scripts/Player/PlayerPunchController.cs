@@ -38,6 +38,7 @@ public class PlayerPunchController : MonoBehaviour {
 		cameraController.MoveToPlayer();
 		currDashTimeLeft -= Time.deltaTime;
 		if (currDashTimeLeft < 0) {
+			Time.timeScale = 1f;
 			if (dashEnemy != null) {
 				LongDashFinish();	
 			} else {
@@ -90,6 +91,7 @@ public class PlayerPunchController : MonoBehaviour {
 		dashStart = transform.position;
 		dashEnemy = enemyObj;
 		playerSFX.PlayDashSound();
+		Time.timeScale = 0.8f;
 	}
 
 	void HandleMissingEnemy(GameObject enemyObj, bool punchFromRight, float distance) {
@@ -101,6 +103,7 @@ public class PlayerPunchController : MonoBehaviour {
 		dashStart = transform.position;
 		dashEnemy = enemyObj;
 		playerSFX.PlayDashSound();
+		Time.timeScale = 0.8f;
 	}
 
 	IEnumerator PauseWaitResume (float pauseDelay) {

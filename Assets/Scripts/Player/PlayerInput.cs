@@ -6,6 +6,9 @@ public class PlayerInput : MonoBehaviour {
 	PlayerGraphics graphics;
 	PlayerPunchController punchController;
 
+	float punchTimeOut = .1f;
+	public float currPunchTimeout = 0;
+
 	void Awake () {
 		graphics = GetComponent<PlayerGraphics> ();
 		punchController = GetComponent<PlayerPunchController> ();
@@ -18,15 +21,20 @@ public class PlayerInput : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		if (currPunchTimeout > 0) {
+			currPunchTimeout -= Time.deltaTime;
+			return;
+		}
+
 		if (Input.GetButtonDown("Right")) {
 			HandleRightKey(true);
 		} else if(Input.GetButtonDown("Left")) {
 			HandleRightKey(false);
 		}
-
 	}
 
 	void HandleRightKey (bool pressedRightKey) {
+		currPunchTimeout = punchTimeOut;
 		graphics.FlipX(!pressedRightKey);
 		graphics.ButtonPressed();
 		int hitDirection = pressedRightKey ? 1 : -1;
