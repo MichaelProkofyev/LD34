@@ -32,10 +32,4 @@ public class PlayerInput : MonoBehaviour {
 		int hitDirection = pressedRightKey ? 1 : -1;
 		punchController.CastPunchRay(hitDirection);
 	}
-
-
-//	void OnCollisionEnter2D(Collision2D other) {
-//		Debug.Log("Enemy hit you!");
-//	}
-
 }

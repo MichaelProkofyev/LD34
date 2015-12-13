@@ -8,7 +8,7 @@ public class CameraController : MonoBehaviour {
 
 	float shakeAmount = .1f;
 	float decreaseFactor = 8f;
-	float maxOffset = .1f;
+	float maxOffset = .15f;
 	float maxXValue;
 	float minXValue;
 	float maxZValue;
@@ -51,6 +51,6 @@ public class CameraController : MonoBehaviour {
 	}
 
 	public void StartShake () {
-		shake = 4.0f;
+		shake = 5.0f;
 	}
 }

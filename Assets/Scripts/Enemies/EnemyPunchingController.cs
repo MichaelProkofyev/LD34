@@ -26,9 +26,7 @@ public class EnemyPunchingController : MonoBehaviour {
 
 
 	void OnCollisionEnter2D(Collision2D other) {
-		if (other.gameObject.tag == "Player") {
-			other.gameObject.GetComponent<PlayerPunchController>().RecievePunchFromRight(!movingRight);
-		}
+		
 	}
 
 	public void RecievePunchFromRight(bool punchFromRight, float punchPower) {

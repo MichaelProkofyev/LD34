@@ -37,18 +37,13 @@ public class EnemiesSpawner : MonoBehaviour {
 			spawnTimeOut = DEBUG_SPEED ? 0.2f : Random.Range(.75f, 2f);
 
 			GameObject newEnemy;
-			int runDirection;
 			if (shouldSpawnToRight()) {
 				newEnemy = (GameObject)Instantiate(enemyPrefab, rightSpawnPoint.position, Quaternion.identity);
-				runDirection = -1;
 			}else {
 				newEnemy = (GameObject)Instantiate(enemyPrefab, leftSpawnPoint.position, Quaternion.identity);
-				runDirection = 1;
 			}
-			newEnemy.GetComponent<EnemyGraphics>().StartMoving();
-			newEnemy.GetComponent<EnemyGraphics>().FlipX(lastSpawnRight);
-			newEnemy.GetComponent<EnemyMovementController>().SetDirection(runDirection);				
-			newEnemy.GetComponent<EnemyPunchingController>().movingRight = !lastSpawnRight;
+			newEnemy.GetComponent<EnemyController>().movingRight = !lastSpawnRight;
+			newEnemy.GetComponent<EnemyController>().StartMovingToPlayer();
 
 		}
 	}
