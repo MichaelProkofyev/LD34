@@ -29,4 +29,8 @@ public class EnemyGraphics : MonoBehaviour {
 	public void FlipX (bool flipX) {
 		spriteRenderer.flipX = flipX;
 	}
+
+	public void Punch () {
+		enemyAnimator.SetTrigger("kick");
+	}
 }

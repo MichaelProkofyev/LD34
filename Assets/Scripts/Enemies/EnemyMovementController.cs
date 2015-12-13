@@ -6,7 +6,6 @@ public class EnemyMovementController : MonoBehaviour {
 	float speed = 5f;
 	public Vector3 movementVector;
 	public bool moving = true;
-	int direction = 1;
 
 
 
@@ -16,7 +15,6 @@ public class EnemyMovementController : MonoBehaviour {
 	}
 
 	public void SetDirection (int startDirection) {
-		direction = startDirection;
 		movementVector = Vector3.right * startDirection * speed;
 	}
 

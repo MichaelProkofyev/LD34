@@ -7,11 +7,15 @@ public class EnemyPunchingController : MonoBehaviour {
 
 	Rigidbody2D rb;
 	EnemyMovementController movingController;
+	GameController gameController;
+	int scoreForThisEnemy = 100;
+	PlayerHealth playerHealth;
 
 	void Awake() {
 		rb = GetComponent<Rigidbody2D>();
 		movingController = GetComponent<EnemyMovementController>();
-
+		gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
+		playerHealth = GameObject.FindWithTag("Player").GetComponent<PlayerHealth> ();
 	}
 
 	// Use this for initialization
@@ -22,6 +26,11 @@ public class EnemyPunchingController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 	
+	}
+
+	public void PunchPlayer () {
+		gameController.HandlePlayerDamage();
+		playerHealth.RecievePunchFromRight(!movingRight);
 	}
 
 
@@ -36,7 +45,7 @@ public class EnemyPunchingController : MonoBehaviour {
 		int direсtion = punchFromRight ? -1 : 1;
 		rb.AddForce((direсtion * Vector3.right + Vector3.up) * punchPower, ForceMode2D.Impulse);
 		rb.constraints = RigidbodyConstraints2D.FreezeRotation;
-
+		gameController.AddScore(scoreForThisEnemy);
 		Destroy(gameObject, 2f);
 	}
 }

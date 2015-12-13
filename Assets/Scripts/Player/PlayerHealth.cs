@@ -3,7 +3,6 @@ using System.Collections;
 
 public class PlayerHealth : MonoBehaviour {
 
-	int health = 3;
 	PlayerGraphics playerGraphicsController;
 	CameraController cameraController;
 	PlayerSFX playerSFX;

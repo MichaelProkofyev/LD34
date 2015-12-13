@@ -9,6 +9,7 @@ public class EnemyController : MonoBehaviour {
 		MOVING_TO_PLAYER,
 		WAITING_TO_PUNCH,
 		PUNCHING,
+		PUNCHING_ANIMATION,
 		DEAD
 	}
 
@@ -16,13 +17,12 @@ public class EnemyController : MonoBehaviour {
 	EnemyMovementController movement;
 	EnemyGraphics enemyGraphics;
 	EnemyPunchingController enemyPunch;
-	PlayerHealth playerHealth;
 
 	int playerMask;
 
-	public float punchWait = 1f;
+	public float punchWait = 1.5f;
 	public bool movingRight;
-	float punchWaitLeft = 1f;
+	float punchWaitLeft = 1.5f;
 
 
 
@@ -35,7 +35,7 @@ public class EnemyController : MonoBehaviour {
 		movement = GetComponent<EnemyMovementController> ();
 		enemyGraphics = GetComponent<EnemyGraphics> ();
 		enemyPunch = GetComponent<EnemyPunchingController> ();
-		playerHealth = GameObject.FindWithTag("Player").GetComponent<PlayerHealth> ();
+
 		playerMask = LayerMask.GetMask("Player");	
 	}
 	
@@ -61,13 +61,19 @@ public class EnemyController : MonoBehaviour {
 			}
 			break;
 		case EnemyState.PUNCHING:
-			playerHealth.RecievePunchFromRight(!movingRight);
-			punchWaitLeft = punchWait;
-			state = EnemyState.WAITING_TO_PUNCH;
+			enemyGraphics.Punch();
+			Invoke("StartPunching", 0.2f);
+			state = EnemyState.PUNCHING_ANIMATION;
 			break;
 		default:
 			break;
 		}
+	}
+
+	void StartPunching() {
+		enemyPunch.PunchPlayer();
+		state = EnemyState.WAITING_TO_PUNCH;
+		punchWaitLeft = punchWait;
 	}
 
 	public void StartMovingToPlayer () {
