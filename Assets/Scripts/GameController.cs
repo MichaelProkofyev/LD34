@@ -100,7 +100,7 @@ public class GameController : MonoBehaviour {
 
 	public void AddScore(int recievedScore) {
 		score += GetSummoners();
-		scoreText.text = "Rebels: " + score;
+		scoreText.text = "Rebels united: " + score;
 	}
 
 	public void HandlePlayerDamage () {

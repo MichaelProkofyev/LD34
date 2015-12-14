@@ -9,14 +9,20 @@ public class IntroductionTextController : MonoBehaviour {
 	public AudioClip[] chars;
 
 
-	string msg1 = "This regimes wall has oppressed our people far too long!";
-	string msg2 = "Who on the scene can unite us with their outrageous moves!";//"But who is going to unite us with outrageously good dancing on this scene?"; 
+	string msg1 = "The regimes wall has oppressed our people for far too long!";
+	string msg2 = "But who can unite us with their outrageous moves on the scene!?";//"But who is going to unite us with outrageously good dancing on this scene?"; 
 	string msg3 = "Hey Stu, come here"; 
-	string response1 = "Army interns, stop him before he dances this wall to the ground!";
+	string response1 = "Army interns, stop him before he DANCES this wall to the ground!";
+
+	public Sprite head1;
+	public Sprite head2;
+	public Image headSpriteRenderer;
 
 	public bool finishedPrinting = false;
 	public bool shouldRevealScene = false;
 	public bool shouldRevealHero = false;
+
+
 
 	AudioSource audioSource;
 
@@ -50,10 +56,29 @@ public class IntroductionTextController : MonoBehaviour {
 		yield return StartCoroutine("UpdateMessage", msg3);
 		shouldRevealHero = true;
 		yield return new WaitForSeconds(1f);
+		headSpriteRenderer.enabled = true;
+		StartCoroutine("UpdateHead");
 		yield return StartCoroutine("UpdateMessage", response1);
 		yield return new WaitForSeconds(3f);
+		StopCoroutine("UpdateHead");
 		finishedPrinting = true;
 	}
+
+	IEnumerator UpdateHead (){
+		while (true) {
+			headSpriteRenderer.sprite = head1;
+			yield return new WaitForSeconds(0.2f);
+			headSpriteRenderer.sprite = head2;	
+			yield return new WaitForSeconds(0.2f);
+		}
+	}
+
+//	IEnumerator RotateHead () {
+//		while (true) {
+//			yield return new WaitForSeconds(0.01f);
+//			headSpriteRenderer.gameObject.transform.Rotate(0,1,0, Space.Self);
+//		}
+//	}
 
 	IEnumerator UpdateMessage (string message) {
 		int charIndex = 0;
