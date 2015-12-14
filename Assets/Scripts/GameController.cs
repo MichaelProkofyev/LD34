@@ -11,7 +11,7 @@ public class GameController : MonoBehaviour {
 	public GameObject [] startSequenceObjects;
 	public GameObject [] startSequenceExcessObjects;
 
-
+	int crowdNumbers = 0;
 
 	enum GameState
 	{
@@ -23,6 +23,7 @@ public class GameController : MonoBehaviour {
 
 	GameState currentState;
 	ComboController comboController;
+	CrowdSpawner crowdSpawnController;
 
 	public bool shouldShowStartSequence = true;
 	public Text scoreText;
@@ -33,6 +34,7 @@ public class GameController : MonoBehaviour {
 	public GameObject [] heartsImages; 
 	public IntroductionTextController introTextController;
 
+
 	// Use this for initialization
 	void Start () {
 		currentState = shouldShowStartSequence ? GameState.STARTSEQUENCE : GameState.GAMESTARTED;
@@ -42,6 +44,7 @@ public class GameController : MonoBehaviour {
 
 	void Awake () {
 		comboController = GameObject.FindGameObjectWithTag("ComboText").GetComponent<ComboController>();
+		crowdSpawnController = GetComponent<CrowdSpawner> ();
 	}
 	
 	// Update is called once per frame
@@ -99,8 +102,11 @@ public class GameController : MonoBehaviour {
 
 
 	public void AddScore(int recievedScore) {
-		score += GetSummoners();
-		scoreText.text = "Rebels united: " + score;
+		score += 10 * comboController.comboPoints;
+		if (crowdNumbers < 60) {
+			crowdSpawnController.SpawnHumans(comboController.comboPoints); 
+		}
+		scoreText.text = "Score: " + score;
 	}
 
 	public void HandlePlayerDamage () {
@@ -109,16 +115,16 @@ public class GameController : MonoBehaviour {
 			hearts -= 1;
 			if (hearts == 0) {
 				gameOverTextObject.SetActive(true);
-				endGameScore.text = "Rebels summoned: " + score;
+				endGameScore.text = "Final score: " + score;
 				currentState = GameState.GAMEOVER;
 				Time.timeScale = 0;
 			}	
 		}
 	}
 
-	int GetSummoners() {
-		return Random.Range(2,3) * comboController.comboPoints;
-	}
+//	int GetSummoners() {
+//		return Random.Range(2,3) * comboController.comboPoints;
+//	}
 
 	public void PauseTime()
 	{
