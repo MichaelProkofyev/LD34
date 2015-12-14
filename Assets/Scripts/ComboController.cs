@@ -10,6 +10,8 @@ public class ComboController : MonoBehaviour {
 	Color comboColorHot;// = ToColor("2ECC71");
 	float coolTime = .5f;
 	float currcoolTime;
+	float comboActiveTime = 2;
+	float currentComboActiveTime = 0;
 	public int comboPoints = 1;
 
 	// Use this for initialization
@@ -27,6 +29,13 @@ public class ComboController : MonoBehaviour {
 			currcoolTime -= Time.deltaTime;
 			comboText.transform.localScale = Vector3.Lerp(Vector3.one, maxLocalScale, currcoolTime/coolTime);
 		}
+
+		if (currentComboActiveTime > 0) {
+			currentComboActiveTime -= Time.deltaTime;
+			if (currentComboActiveTime < 0) {
+				ResetComboPoints();
+			}
+		}
 	}
 
 	public void AddComboPoint () {
@@ -34,6 +43,7 @@ public class ComboController : MonoBehaviour {
 		currcoolTime = coolTime;
 		comboPoints += 1;
 		comboText.text = "Combo X" + comboPoints;
+		currentComboActiveTime = comboActiveTime;
 	}
 
 	public void ResetComboPoints () {

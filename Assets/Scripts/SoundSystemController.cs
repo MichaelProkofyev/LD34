@@ -43,6 +43,10 @@ public class SoundSystemController : MonoBehaviour {
 		mainThemeStartAudioSource.Stop();
 	}
 
+//	public void PauseAll () {
+//		
+//	}
+
 
 }
 

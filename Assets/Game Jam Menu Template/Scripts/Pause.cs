@@ -4,6 +4,8 @@ using System.Collections;
 public class Pause : MonoBehaviour {
 
 
+	public SoundSystemController mainMusicAudioSource;
+
 	private ShowPanels showPanels;						//Reference to the ShowPanels script used to hide and show UI panels
 	private bool isPaused;								//Boolean to check if the game is paused or not
 	private StartOptions startScript;					//Reference to the StartButton script
@@ -38,6 +40,7 @@ public class Pause : MonoBehaviour {
 
 	public void DoPause()
 	{
+		Camera.main.GetComponent<CameraController>().shake = 0;
 		//Set isPaused to true
 		isPaused = true;
 		//Set time.timescale to 0, this will cause animations and physics to stop updating

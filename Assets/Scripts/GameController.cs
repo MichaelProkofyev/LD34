@@ -5,9 +5,18 @@ using UnityEngine.UI;
 
 public class GameController : MonoBehaviour {
 
+	//START SEQUENCE CHANGES
+
+
+	public GameObject [] startSequenceObjects;
+	public GameObject [] startSequenceExcessObjects;
+
+
 
 	enum GameState
 	{
+		STARTSEQUENCE,
+		SHOWING_START_SEQUENCE,
 		GAMESTARTED,
 		GAMEOVER,
 	}
@@ -15,15 +24,19 @@ public class GameController : MonoBehaviour {
 	GameState currentState;
 	ComboController comboController;
 
+	public bool shouldShowStartSequence = true;
 	public Text scoreText;
 	public GameObject gameOverTextObject;
+	public Text endGameScore;
 	int score = 0;
 	int hearts = 3;
 	public GameObject [] heartsImages; 
 
 	// Use this for initialization
 	void Start () {
-		currentState = GameState.GAMESTARTED;
+		currentState = shouldShowStartSequence ? GameState.STARTSEQUENCE : GameState.GAMESTARTED;
+
+
 	}
 
 	void Awake () {
@@ -32,7 +45,21 @@ public class GameController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (currentState == GameState.GAMEOVER) {
+
+		switch (currentState) {
+		case GameState.STARTSEQUENCE:
+			foreach (GameObject gameObj in startSequenceExcessObjects) {
+				gameObj.SetActive(false);
+			}
+			foreach (GameObject gameObj in startSequenceObjects) {
+				gameObj.SetActive(true);
+			}
+			currentState = GameState.SHOWING_START_SEQUENCE;
+			break;
+		case GameState.SHOWING_START_SEQUENCE:
+			
+			break;
+		case GameState.GAMEOVER:
 			Camera.main.GetComponent<CameraController>().shake = 0;
 			if (Input.GetKeyDown(KeyCode.Q)) {
 				Quit();
@@ -40,6 +67,9 @@ public class GameController : MonoBehaviour {
 				Application.LoadLevel (1);
 				Time.timeScale = 1;
 			}
+			break;
+		default:
+			break;
 		}
 	}
 
@@ -55,6 +85,7 @@ public class GameController : MonoBehaviour {
 			hearts -= 1;
 			if (hearts == 0) {
 				gameOverTextObject.SetActive(true);
+				endGameScore.text = "Rebels summoned: " + score;
 				currentState = GameState.GAMEOVER;
 				Time.timeScale = 0;
 			}	
