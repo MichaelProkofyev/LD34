@@ -31,6 +31,7 @@ public class GameController : MonoBehaviour {
 	int score = 0;
 	int hearts = 3;
 	public GameObject [] heartsImages; 
+	public IntroductionTextController introTextController;
 
 	// Use this for initialization
 	void Start () {
@@ -46,6 +47,7 @@ public class GameController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
+
 		switch (currentState) {
 		case GameState.STARTSEQUENCE:
 			foreach (GameObject gameObj in startSequenceExcessObjects) {
@@ -57,7 +59,31 @@ public class GameController : MonoBehaviour {
 			currentState = GameState.SHOWING_START_SEQUENCE;
 			break;
 		case GameState.SHOWING_START_SEQUENCE:
-			
+			if (Input.GetKeyDown(KeyCode.Space)) {
+				introTextController.SkipAllThis();
+			}
+
+
+			if (introTextController.shouldRevealScene) {
+				startSequenceObjects[0].SetActive(false); //big intro wall
+				startSequenceExcessObjects[3].SetActive(true); //background
+				introTextController.shouldRevealScene = false;
+			}else if(introTextController.shouldRevealHero) {
+				startSequenceExcessObjects[4].SetActive(true); //Player
+				introTextController.shouldRevealHero = false;
+			}else if(introTextController.finishedPrinting) {
+				startSequenceObjects[1].SetActive(false);
+				foreach (GameObject gameObj in startSequenceExcessObjects) {
+					gameObj.SetActive(true);
+				}
+				startSequenceExcessObjects[1].GetComponent<SoundSystemController>().StartCoroutine("PlayMainTheme");
+				startSequenceExcessObjects[2].GetComponent<EnemiesSpawner>().StartCoroutine("SpawnEnemies");
+				foreach (GameObject lightObj in  GameObject.FindGameObjectsWithTag("Light")) {
+					lightObj.GetComponent<LightChanger>().StartCoroutine("ChangeLights");
+				}
+				startSequenceExcessObjects[5].GetComponent<ButtonFlicker>().StartCoroutine("StartFlicker");
+				currentState = GameState.GAMESTARTED;
+			}
 			break;
 		case GameState.GAMEOVER:
 			Camera.main.GetComponent<CameraController>().shake = 0;
@@ -67,8 +93,6 @@ public class GameController : MonoBehaviour {
 				Application.LoadLevel (1);
 				Time.timeScale = 1;
 			}
-			break;
-		default:
 			break;
 		}
 	}

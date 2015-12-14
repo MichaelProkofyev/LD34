@@ -11,14 +11,14 @@ public class LightChanger : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		StartCoroutine("ChangeLights");
+//		StartCoroutine("ChangeLights");
 	}
 
 	void Awake() {
 		spriteRenderer = GetComponent<SpriteRenderer> ();
 	}
 
-	IEnumerator ChangeLights () {
+	public IEnumerator ChangeLights () {
 		while(true) {
 			yield return new WaitForSeconds(0.5f);
 			lightIndex = Random.Range(0, 4);

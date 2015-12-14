@@ -11,7 +11,7 @@ public class PlayerPunchController : MonoBehaviour {
 	int enemiesMask;
 
 	float shortPunchDistance = 1f;
-	float longPunchDistance = 6f;
+	float longPunchDistance = 4f;
 
 	float longPunchDashTime = .1f;
 	float currDashTimeLeft;

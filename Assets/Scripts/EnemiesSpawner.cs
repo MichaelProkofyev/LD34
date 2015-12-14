@@ -16,7 +16,7 @@ public class EnemiesSpawner : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		spawnTimeOut = Random.Range(0f, 1f);
-		StartCoroutine("SpawnEnemies");
+//		StartCoroutine("SpawnEnemies");
 	}
 
 	void Update () {
@@ -31,7 +31,7 @@ public class EnemiesSpawner : MonoBehaviour {
 
 
 
-	IEnumerator SpawnEnemies() {
+	public IEnumerator SpawnEnemies() {
 		while(true) {
 			yield return new WaitForSeconds(spawnTimeOut);
 			spawnTimeOut = DEBUG_SPEED ? 20f : Random.Range(.5f, .5f);

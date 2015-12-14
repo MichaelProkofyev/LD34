@@ -18,9 +18,9 @@ public class SoundSystemController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		if (playMainTheme) {
-			StartCoroutine("PlayMainTheme");	
-		}
+//		if (playMainTheme) {
+//			StartCoroutine("PlayMainTheme");	
+//		}
 	}
 
 	// Update is called once per frame
@@ -28,7 +28,7 @@ public class SoundSystemController : MonoBehaviour {
 
 	}
 
-	IEnumerator PlayMainTheme () {
+	public IEnumerator PlayMainTheme () {
 		mainThemeStartAudioSource.Play();
 //		yield return new WaitForSeconds(mainThemeStartAudioSource.clip.length);
 
@@ -44,8 +44,18 @@ public class SoundSystemController : MonoBehaviour {
 	}
 
 //	public void PauseAll () {
-//		
+//			
 //	}
+
+	public void VolumeZero () {
+		mainThemeStartAudioSource.volume = 0.1f;
+		mainThemeLoopAudioSource.volume = 0.1f;
+	}
+
+	public void VolumeNormal () {
+		mainThemeStartAudioSource.volume = 1;
+		mainThemeLoopAudioSource.volume = 1;
+	}
 
 
 }
