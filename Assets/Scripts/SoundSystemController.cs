@@ -1,16 +1,26 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[RequireComponent(typeof(AudioSource))]
 public class SoundSystemController : MonoBehaviour {
 
 
-	public AudioClip [] punchClips;
+
 	AudioSource audioSource;
-	int lastPunchIndex = 0;
+
+	public AudioSource mainThemeStartAudioSource;
+	public AudioSource mainThemeLoopAudioSource;
+	public bool playMainTheme = true;
+
+	void Awake () {
+		audioSource = GetComponent<AudioSource> ();		
+	}
 
 	// Use this for initialization
 	void Start () {
-		audioSource = GetComponent<AudioSource> ();		
+		if (playMainTheme) {
+			StartCoroutine("PlayMainTheme");	
+		}
 	}
 
 	// Update is called once per frame
@@ -18,12 +28,34 @@ public class SoundSystemController : MonoBehaviour {
 
 	}
 
-	public void playPunchSound () {
-//		audioSource.PlayOneShot(punchClips[Random.Range(0, punchClips.Length-1)]);
-		audioSource.PlayOneShot(punchClips[lastPunchIndex]);
-		lastPunchIndex++;
-		if (lastPunchIndex == punchClips.Length) {
-			lastPunchIndex = 0;
+	IEnumerator PlayMainTheme () {
+		mainThemeStartAudioSource.Play();
+//		yield return new WaitForSeconds(mainThemeStartAudioSource.clip.length);
+
+		yield return StartCoroutine(CoroutineUtil.WaitForRealSeconds(mainThemeStartAudioSource.clip.length));
+
+
+		mainThemeLoopAudioSource.Play();
+	}
+
+	public void StopPlayingMainTheme () {
+		mainThemeLoopAudioSource.Stop();
+		mainThemeStartAudioSource.Stop();
+	}
+
+
+}
+
+
+public static class CoroutineUtil
+{
+	public static IEnumerator WaitForRealSeconds(float time)
+	{
+		float start = Time.realtimeSinceStartup;
+		while (Time.realtimeSinceStartup < start + time)
+		{
+			yield return null;
 		}
 	}
 }
+

@@ -40,6 +40,7 @@ public class BackgroundUpdater : MonoBehaviour {
 	}
 
 	void CheckForLeftBorder () {
+		
 		bool needToUpdateLeftScene = player.transform.position.x < currentScenes[0].transform.position.x + 5f;
 		if (needToUpdateLeftScene) {
 			GameObject oldCurrentScene = currentScenes[1];

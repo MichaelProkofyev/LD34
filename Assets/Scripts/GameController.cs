@@ -13,6 +13,7 @@ public class GameController : MonoBehaviour {
 	}
 
 	GameState currentState;
+	ComboController comboController;
 
 	public Text scoreText;
 	public GameObject gameOverTextObject;
@@ -24,10 +25,15 @@ public class GameController : MonoBehaviour {
 	void Start () {
 		currentState = GameState.GAMESTARTED;
 	}
+
+	void Awake () {
+		comboController = GameObject.FindGameObjectWithTag("ComboText").GetComponent<ComboController>();
+	}
 	
 	// Update is called once per frame
 	void Update () {
 		if (currentState == GameState.GAMEOVER) {
+			Camera.main.GetComponent<CameraController>().shake = 0;
 			if (Input.GetKeyDown(KeyCode.Q)) {
 				Quit();
 			}else if (Input.GetKeyDown(KeyCode.R)) {
@@ -39,8 +45,8 @@ public class GameController : MonoBehaviour {
 
 
 	public void AddScore(int recievedScore) {
-		score += recievedScore;
-		scoreText.text = "Score: " + score;
+		score += GetSummoners();
+		scoreText.text = "Rebels: " + score;
 	}
 
 	public void HandlePlayerDamage () {
@@ -53,6 +59,10 @@ public class GameController : MonoBehaviour {
 				Time.timeScale = 0;
 			}	
 		}
+	}
+
+	int GetSummoners() {
+		return Random.Range(2,3) * comboController.comboPoints;
 	}
 
 	public void PauseTime()

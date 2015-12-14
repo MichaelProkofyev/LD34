@@ -22,7 +22,7 @@ public class StartOptions : MonoBehaviour {
 	private PlayMusic playMusic;										//Reference to PlayMusic script
 	private float fastFadeIn = .01f;									//Very short fade time (10 milliseconds) to start playing music immediately without a click/glitch
 	private ShowPanels showPanels;										//Reference to ShowPanels script on UI GameObject, to show and hide panels
-
+	private AudioSource audioSource;
 	
 	void Awake()
 	{
@@ -31,18 +31,24 @@ public class StartOptions : MonoBehaviour {
 
 		//Get a reference to PlayMusic attached to UI object
 		playMusic = GetComponent<PlayMusic> ();
+
+		audioSource = GetComponent<AudioSource>();
 	}
 
 
 	public void StartButtonClicked()
 	{
+
+
 		//If changeMusicOnStart is true, fade out volume of music group of AudioMixer by calling FadeDown function of PlayMusic, using length of fadeColorAnimationClip as time. 
 		//To change fade time, change length of animation "FadeToColor"
-		if (changeMusicOnStart) 
-		{
-			playMusic.FadeDown(fadeColorAnimationClip.length);
-			Invoke ("PlayNewMusic", fadeAlphaAnimationClip.length);
-		}
+//		if (changeMusicOnStart) 
+//		{
+//			playMusic.FadeDown(fadeColorAnimationClip.length);
+//			Invoke ("PlayNewMusic", fadeAlphaAnimationClip.length);
+//		}
+
+		audioSource.Stop();
 
 		//If changeScenes is true, start fading and change scenes halfway through animation when screen is blocked by FadeImage
 		if (changeScenes) 
@@ -84,11 +90,12 @@ public class StartOptions : MonoBehaviour {
 
 		//If changeMusicOnStart is true, fade out volume of music group of AudioMixer by calling FadeDown function of PlayMusic, using length of fadeColorAnimationClip as time. 
 		//To change fade time, change length of animation "FadeToColor"
-		if (changeMusicOnStart) 
-		{
-			//Wait until game has started, then play new music
-			Invoke ("PlayNewMusic", fadeAlphaAnimationClip.length);
-		}
+//		if (changeMusicOnStart) 
+//		{
+//			//Wait until game has started, then play new music
+//			Invoke ("PlayNewMusic", fadeAlphaAnimationClip.length);
+//		}
+		audioSource.Stop();
 		//Set trigger for animator to start animation fading out Menu UI
 		animMenuAlpha.SetTrigger ("fade");
 

@@ -35,6 +35,6 @@ public class EnemyGraphics : MonoBehaviour {
 	}
 
 	public void Die () {
-		enemyAnimator.SetBool("dead", true);
+		enemyAnimator.Play("death");
 	}
 }

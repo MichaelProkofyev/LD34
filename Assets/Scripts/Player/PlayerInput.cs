@@ -36,7 +36,6 @@ public class PlayerInput : MonoBehaviour {
 	void HandleRightKey (bool pressedRightKey) {
 		currPunchTimeout = punchTimeOut;
 		graphics.FlipX(!pressedRightKey);
-		graphics.ButtonPressed();
 		int hitDirection = pressedRightKey ? 1 : -1;
 		punchController.CastPunchRay(hitDirection);
 	}

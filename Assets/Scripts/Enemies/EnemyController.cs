@@ -99,8 +99,8 @@ public class EnemyController : MonoBehaviour {
 
 	public void Die () {
 		StopMovingToPlayer();
-		GetComponent<Collider2D>().enabled = false;
 		enemyGraphics.Die();
+		gameObject.layer = 10;//LayerMask.GetMask("DeadEnemy");
 		state = EnemyState.DEAD;
 	}
 

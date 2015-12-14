@@ -8,7 +8,6 @@ public class PlayerGraphics : MonoBehaviour {
 	FlasherToWhite flasherToWhite;
 
 	float flashDuration = 0.1f;
-	Color flashColor = new Color(1f, 1f, 1f, 0f);
 
 	void Awake() {
 		spriteRenderer = GetComponent<SpriteRenderer> ();
@@ -24,8 +23,12 @@ public class PlayerGraphics : MonoBehaviour {
 	void Update () {
 	}
 
-	public void ButtonPressed() {
+	public void ShortPunch() {
 		animator.SetTrigger("action");
+	}
+
+	public void LongPunch() {
+		animator.SetTrigger("long_kick");
 	}
 
 	public void FlipX (bool flipX) {

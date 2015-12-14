@@ -4,9 +4,11 @@ using System.Collections;
 public class PlayerSFX : MonoBehaviour {
 
 	public AudioClip dashSFX;
-	public AudioClip punchSFX;
+	public AudioClip [] punchClips;
+	public AudioClip  punchSnareClip;
 	public AudioClip take_damageSFX;
 	AudioSource audioSource;
+	bool lastPunchDrum = false;
 
 	// Use this for initialization
 	void Awake () {
@@ -21,7 +23,16 @@ public class PlayerSFX : MonoBehaviour {
 
 	public void PlayPunchSound () {
 		audioSource.Stop();		
-		audioSource.PlayOneShot(punchSFX);
+		int randomDrumIdx = Random.Range(0, punchClips.Length);
+		audioSource.PlayOneShot(punchClips[randomDrumIdx]);
+
+//		lastPunchDrum = !lastPunchDrum;
+	}
+
+	public void PlayLongPunchSound () {
+		audioSource.Stop();
+		int randomDrumIdx = Random.Range(0, punchClips.Length);
+		audioSource.PlayOneShot(punchClips[randomDrumIdx]);
 	}
 
 	public void PlayDashSound () {
