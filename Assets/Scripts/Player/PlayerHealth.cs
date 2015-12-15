@@ -30,7 +30,7 @@ public class PlayerHealth : MonoBehaviour {
 		playerGraphicsController.FlashSprite();
 		playerGraphicsController.TakeDamage();
 		health--;
-		if (health ==0) {
+		if (health == 0) {
 			playerGraphicsController.Die();	
 			playerSFX.PlayGameOverSound();
 			return;

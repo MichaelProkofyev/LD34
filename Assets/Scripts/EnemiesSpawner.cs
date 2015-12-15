@@ -8,6 +8,7 @@ public class EnemiesSpawner : MonoBehaviour {
 	public Transform rightSpawnPoint;
 	public GameObject enemyPrefab;
 	public GameObject dogPrefab;
+	public GameObject balletPrefab;
 	public Transform playersTransform;
 
 	float spawnTimeOut = 1f;
@@ -45,11 +46,19 @@ public class EnemiesSpawner : MonoBehaviour {
 			GameObject newEnemy;
 
 			if (Random.Range(enemySpawnChance, dogSpawnChance) >= 0) {
-				if (shouldSpawnToRight()) {
-					newEnemy = (GameObject)Instantiate(dogPrefab, (Vector2)rightSpawnPoint.position - Vector2.up*0.5f, Quaternion.identity);
+				if (Random.Range(0,2) == 0) {
+					if (shouldSpawnToRight()) {
+						newEnemy = (GameObject)Instantiate(dogPrefab, (Vector2)rightSpawnPoint.position - Vector2.up*0.5f, Quaternion.identity);
+					}else {
+						newEnemy = (GameObject)Instantiate(dogPrefab, (Vector2)leftSpawnPoint.position - Vector2.up*0.5f, Quaternion.identity);
+					}		
 				}else {
-					newEnemy = (GameObject)Instantiate(dogPrefab, (Vector2)leftSpawnPoint.position - Vector2.up*0.5f, Quaternion.identity);
-				}	
+					if (shouldSpawnToRight()) {
+						newEnemy = (GameObject)Instantiate(balletPrefab, (Vector2)rightSpawnPoint.position, Quaternion.identity);
+					}else {
+						newEnemy = (GameObject)Instantiate(balletPrefab, (Vector2)leftSpawnPoint.position, Quaternion.identity);
+					}	
+				}
 			}else {
 				if (shouldSpawnToRight()) {
 					newEnemy = (GameObject)Instantiate(enemyPrefab, (Vector2)rightSpawnPoint.position, Quaternion.identity);
