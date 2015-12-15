@@ -7,6 +7,7 @@ public class PlayerSFX : MonoBehaviour {
 	public AudioClip [] punchClips;
 	public AudioClip  punchSnareClip;
 	public AudioClip take_damageSFX;
+	public AudioClip gameOverSFX;
 	AudioSource audioSource;
 	bool lastPunchDrum = false;
 
@@ -46,5 +47,9 @@ public class PlayerSFX : MonoBehaviour {
 
 	public void PlayDamageTakenSound () {
 		audioSource.PlayOneShot(take_damageSFX);
+	}
+
+	public void PlayGameOverSound () {
+		audioSource.PlayOneShot(gameOverSFX);
 	}
 }

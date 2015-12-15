@@ -28,10 +28,11 @@ public class PlayerHealth : MonoBehaviour {
 		Debug.Log("Player punched");
 		playerSFX.PlayDamageTakenSound();
 		playerGraphicsController.FlashSprite();
-//		playerGraphicsController.TakeDamage();
+		playerGraphicsController.TakeDamage();
 		health--;
 		if (health ==0) {
 			playerGraphicsController.Die();	
+			playerSFX.PlayGameOverSound();
 			return;
 		}
 		StartCoroutine("PauseWaitResume", 0.2f);

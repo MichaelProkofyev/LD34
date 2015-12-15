@@ -118,6 +118,8 @@ public class GameController : MonoBehaviour {
 			heartsImages[hearts - 1].SetActive(false);
 			hearts -= 1;
 			if (hearts == 0) {
+				startSequenceExcessObjects[1].SetActive(false);
+				startSequenceExcessObjects[0].SetActive(false);
 				gameOverTextObject.SetActive(true);
 				endGameScore.text = "Final score: " + score;
 				currentState = GameState.GAMEOVER;

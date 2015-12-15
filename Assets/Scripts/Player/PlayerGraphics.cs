@@ -7,6 +7,7 @@ public class PlayerGraphics : MonoBehaviour {
 	Animator animator;
 	FlasherToWhite flasherToWhite;
 
+
 	float flashDuration = 0.1f;
 
 	void Awake() {
@@ -24,7 +25,11 @@ public class PlayerGraphics : MonoBehaviour {
 	}
 
 	public void ShortPunch() {
-		animator.SetTrigger("action");
+		if(Random.Range(0,2) == 0) {
+			animator.SetTrigger("action");
+		}else {
+			animator.SetTrigger("action_2");
+		}
 	}
 
 	public void LongPunch() {
@@ -49,11 +54,7 @@ public class PlayerGraphics : MonoBehaviour {
 		animator.Play("Death");
 	}
 
-//	public void TakeDamage () {
-//		animator.SetTrigger("take_damage");
-//	}
-//
-//	public void ShortPunch2 () {
-//		animator.SetTrigger("action_2");
-//	}
+	public void TakeDamage () {
+		animator.SetTrigger("take_damage");
+	}
 }

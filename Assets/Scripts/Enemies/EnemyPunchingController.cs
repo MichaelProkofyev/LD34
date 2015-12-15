@@ -29,7 +29,6 @@ public class EnemyPunchingController : MonoBehaviour {
 
 	public void PunchPlayer () {
 		gameController.HandlePlayerDamage();
-		Debug.Log(GameObject.FindWithTag("Player"));
 		playerHealth.RecievePunchFromRight(!movingRight);
 	}
 
