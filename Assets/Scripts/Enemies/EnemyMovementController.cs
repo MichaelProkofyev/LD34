@@ -3,7 +3,7 @@ using System.Collections;
 
 public class EnemyMovementController : MonoBehaviour {
 
-	float speed = 5f;
+ 	public float speed = 5f;
 	public Vector3 movementVector;
 	public bool moving = true;
 

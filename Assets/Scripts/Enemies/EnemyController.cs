@@ -12,7 +12,6 @@ public class EnemyController : MonoBehaviour {
 		PUNCHING_ANIMATION,
 		DEAD
 	}
-		
 
 
 	public EnemyState state = EnemyState.MOVING_TO_PLAYER;
@@ -24,13 +23,14 @@ public class EnemyController : MonoBehaviour {
 
 	public float punchWait = 1.5f;
 	public bool movingRight;
-	float punchWaitLeft = 1.5f;
+	public float punchWaitLeft = 1.5f;
+
+	public float punchAnimationDelay = 0.2f;
 
 
 
 	// Use this for initialization
-	void Start () {
-		state = EnemyState.MOVING_TO_PLAYER;
+	virtual protected void Start () {
 	}
 
 	void Awake() {
@@ -42,7 +42,7 @@ public class EnemyController : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	virtual protected void Update () {
 		switch (state) {
 		case EnemyState.MOVING_TO_PLAYER:
 			if (PlayerAhead()) {
@@ -66,7 +66,7 @@ public class EnemyController : MonoBehaviour {
 			break;
 		case EnemyState.PUNCHING:
 			enemyGraphics.Punch();
-			Invoke("StartPunching", 0.2f);
+			Invoke("StartPunching", punchAnimationDelay);
 			state = EnemyState.PUNCHING_ANIMATION;
 			break;
 		default:
@@ -102,6 +102,7 @@ public class EnemyController : MonoBehaviour {
 		enemyGraphics.Die();
 		gameObject.layer = 10;//LayerMask.GetMask("DeadEnemy");
 		state = EnemyState.DEAD;
+		GetComponent<EnemyController>().enabled = false;
 	}
 
 	bool PlayerAhead () {

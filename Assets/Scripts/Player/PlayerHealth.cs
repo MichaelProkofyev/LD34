@@ -7,6 +7,7 @@ public class PlayerHealth : MonoBehaviour {
 	CameraController cameraController;
 	PlayerSFX playerSFX;
 
+	int health = 3;
 	// Use this for initialization
 	void Start () {
 	
@@ -27,11 +28,14 @@ public class PlayerHealth : MonoBehaviour {
 		Debug.Log("Player punched");
 		playerSFX.PlayDamageTakenSound();
 		playerGraphicsController.FlashSprite();
+//		playerGraphicsController.TakeDamage();
+		health--;
+		if (health ==0) {
+			playerGraphicsController.Die();	
+			return;
+		}
 		StartCoroutine("PauseWaitResume", 0.2f);
 		cameraController.StartShake();
-//		return;
-//		int direсtion = punchFromRight ? -1 : 1;
-//		transform.Translate(Vector3.right * direсtion);
 	}
 
 	IEnumerator PauseWaitResume (float pauseDelay) {

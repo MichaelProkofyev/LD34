@@ -34,6 +34,8 @@ public class GameController : MonoBehaviour {
 	public GameObject [] heartsImages; 
 	public IntroductionTextController introTextController;
 
+	public int lastCrowdScoreIncrease = 0;
+	int crowdIncreaseThreashhold = 100;
 
 	// Use this for initialization
 	void Start () {
@@ -46,7 +48,7 @@ public class GameController : MonoBehaviour {
 		comboController = GameObject.FindGameObjectWithTag("ComboText").GetComponent<ComboController>();
 		crowdSpawnController = GetComponent<CrowdSpawner> ();
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
 
@@ -102,9 +104,11 @@ public class GameController : MonoBehaviour {
 
 
 	public void AddScore(int recievedScore) {
-		score += 10 * comboController.comboPoints;
-		if (crowdNumbers < 60) {
-			crowdSpawnController.SpawnHumans(comboController.comboPoints); 
+		score += recievedScore * comboController.comboPoints;
+		if (crowdNumbers < 50 && lastCrowdScoreIncrease + crowdIncreaseThreashhold < score) {
+			lastCrowdScoreIncrease = score;
+			crowdIncreaseThreashhold += 100;
+			crowdSpawnController.SpawnHumans(1); 
 		}
 		scoreText.text = "Score: " + score;
 	}

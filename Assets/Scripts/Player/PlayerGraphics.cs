@@ -44,4 +44,16 @@ public class PlayerGraphics : MonoBehaviour {
 		yield return new WaitForSeconds(flashDuration);
 		flasherToWhite.normalSprite();
 	}
+
+	public void Die () {
+		animator.Play("Death");
+	}
+
+//	public void TakeDamage () {
+//		animator.SetTrigger("take_damage");
+//	}
+//
+//	public void ShortPunch2 () {
+//		animator.SetTrigger("action_2");
+//	}
 }

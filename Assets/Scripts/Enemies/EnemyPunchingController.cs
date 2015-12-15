@@ -5,22 +5,21 @@ public class EnemyPunchingController : MonoBehaviour {
 
 	public bool movingRight;
 
-	Rigidbody2D rb;
-	EnemyController enemyController;
-	GameController gameController;
-	int scoreForThisEnemy = 100;
-	PlayerHealth playerHealth;
+	protected Rigidbody2D rb;
+	protected GameController gameController;
+	public int scoreForThisEnemy = 100;
+	public float deathInverseHeight = 3f;
+	protected PlayerHealth playerHealth;
 
 	void Awake() {
 		rb = GetComponent<Rigidbody2D>();
-		enemyController = GetComponent<EnemyController>();
 		gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
 		playerHealth = GameObject.FindWithTag("Player").GetComponent<PlayerHealth> ();
 	}
 
 	// Use this for initialization
-	void Start () {
-	
+	virtual protected void Start () {
+		playerHealth = GameObject.FindWithTag("Player").GetComponent<PlayerHealth> ();
 	}
 	
 	// Update is called once per frame
@@ -30,6 +29,7 @@ public class EnemyPunchingController : MonoBehaviour {
 
 	public void PunchPlayer () {
 		gameController.HandlePlayerDamage();
+		Debug.Log(GameObject.FindWithTag("Player"));
 		playerHealth.RecievePunchFromRight(!movingRight);
 	}
 
@@ -38,10 +38,10 @@ public class EnemyPunchingController : MonoBehaviour {
 		
 	}
 
-	public void RecievePunchFromRight(bool punchFromRight, float punchPower) {
-		enemyController.Die();
+	public virtual void RecievePunchFromRight(bool punchFromRight, float punchPower) {
+		GetComponent<EnemyController>().Die();
 		int direсtion = punchFromRight ? -1 : 1;
-		rb.AddForce((direсtion * Vector3.right + Vector3.up/3f) * punchPower, ForceMode2D.Impulse);
+		rb.AddForce((direсtion * Vector3.right + Vector3.up/deathInverseHeight) * punchPower, ForceMode2D.Impulse);
 		rb.constraints = RigidbodyConstraints2D.FreezeRotation;
 		gameController.AddScore(scoreForThisEnemy);
 		Destroy(gameObject, 2f);

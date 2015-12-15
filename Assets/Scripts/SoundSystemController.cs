@@ -6,14 +6,13 @@ public class SoundSystemController : MonoBehaviour {
 
 
 
-	AudioSource audioSource;
+
 
 	public AudioSource mainThemeStartAudioSource;
 	public AudioSource mainThemeLoopAudioSource;
 	public bool playMainTheme = true;
 
 	void Awake () {
-		audioSource = GetComponent<AudioSource> ();		
 	}
 
 	// Use this for initialization

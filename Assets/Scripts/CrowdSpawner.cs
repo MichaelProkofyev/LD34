@@ -5,7 +5,8 @@ public class CrowdSpawner : MonoBehaviour {
 
 
 	public GameObject [] groundLine;
-	public GameObject human;
+	public GameObject [] humans;
+	int lastHumanIndex = 0;
 
 	public Transform leftSpawnPoint;
 	public Transform rightSpawnPoint;
@@ -31,7 +32,7 @@ public class CrowdSpawner : MonoBehaviour {
 
 //				float spawnx = righPoint ? rightSpawnPoint.position.x : leftSpawnPoint.position.x;
 				Vector2 spawnPoint = new Vector2(b.center.x+Random.Range(-b.extents.x, b.extents.x), Random.Range(-2.8f, -0.5f));//new Vector2(spawnx, Random.Range(-2.8f, -0.5f));
-				GameObject newHuman = (GameObject)Instantiate(human, spawnPoint, Quaternion.identity);
+				GameObject newHuman = (GameObject)Instantiate(humans[++lastHumanIndex%humans.Length], spawnPoint, Quaternion.identity);
 //				newHuman.GetComponent<CrowdMemberMover>().destination = new Vector2(b.center.x+Random.Range(-b.extents.x, b.extents.x), Random.Range(-2.8f, -0.5f));
 				newHuman.GetComponent<CrowdMemberMover>().Invoke("StartJumping", Random.Range(0,1f));
 				newHuman.transform.parent = groundLine[lineIdx].transform;

@@ -10,7 +10,7 @@ public class ComboController : MonoBehaviour {
 	Color comboColorHot;// = ToColor("2ECC71");
 	float coolTime = .5f;
 	float currcoolTime;
-	float comboActiveTime = 2;
+	float comboActiveTime = 1;
 	float currentComboActiveTime = 0;
 	public int comboPoints = 1;
 
